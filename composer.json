@@ -1,0 +1,20 @@
+{
+	"name": "tjm/utils"
+	,"description": "PHP utilities"
+	,"authors": [
+		{
+			"name": "Toby Mackenzie"
+			,"email": "public@tobymackenzie.com"
+			,"homepage": "http://www.tobymackenzie.com"
+		}
+	]
+	,"license": "BSD-3-Clause"
+	,"autoload": {
+		"psr-4": {
+			"TJM\\Component\\Utils\\": "src"
+		}
+	}
+	,"require": {
+		"php": ">=5.3.3"
+	}
+}
