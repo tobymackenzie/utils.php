@@ -6,26 +6,28 @@ use TJM\Component\Utils\BaseNConverter;
 
 class BaseNConverterTest extends PHPUnit_Framework_TestCase{
 	public function testFromForUrlSafeMap(){
-		$converter = new BaseNConverter('urlSafe');
+		$converter = new BaseNConverter('urlSafe', Array('negativeCharacter'=> '%20'));
 		$map = Array(
 			'0'=> '0'
 			,'1'=> '1'
-			,'-1'=> '-1'
+			,'%201'=> '-1'
 			,'a'=> '10'
 			,'18'=> '75'
+			,'-'=> '65'
 		);
 		foreach($map as $baseUrlSafe=> $base10){
 			$this->assertEquals($base10, $converter->from($baseUrlSafe));
 		}
 	}
 	public function testToForUrlSafeMap(){
-		$converter = new BaseNConverter('urlSafe');
+		$converter = new BaseNConverter('urlSafe', Array('negativeCharacter'=> '%20'));
 		$map = Array(
 			'0'=> '0'
 			,'1'=> '1'
-			,'-1'=> '-1'
+			,'-1'=> '%201'
 			,'10'=> 'a'
 			,'75'=> '18'
+			,'65'=> '-'
 		);
 		foreach($map as $base10=> $baseUrlSafe){
 			$this->assertEquals($baseUrlSafe, $converter->to($base10));
