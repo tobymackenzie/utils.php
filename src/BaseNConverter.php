@@ -51,9 +51,9 @@ class BaseNConverter{
 	*/
 	public function from($number){
 		$number = (string) $number;
-		$negative = ($number{0} === $this->negativeCharacter);
+		$negative = (strpos($number, $this->negativeCharacter) === 0);
 		if($negative){
-			$number = substr($number, 1);
+			$number = substr($number, strlen($this->negativeCharacter));
 		}
 		// if($number === $this->characterTable[0]){}
 		$length = strlen($number);
