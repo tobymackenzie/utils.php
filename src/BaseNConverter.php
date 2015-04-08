@@ -6,8 +6,11 @@ Class: BaseNConverter
 Use to convert to and from a base-n number with provided character table.  Only works for integers currently.
 */
 class BaseNConverter{
-	public function __construct($characterTable = null){
+	public function __construct($characterTable = null, $options = Array()){
 		$this->setCharacterTable($characterTable);
+		if(isset($options['negativeCharacter'])){
+			$this->setNegativeCharacter($options['negativeCharacter']);
+		}
 	}
 
 	/*
@@ -37,7 +40,7 @@ class BaseNConverter{
 	*/
 	protected $negativeCharacter = '-';
 
-	public function setNegativeCharacter($negativeCharacter){
+	protected function setNegativeCharacter($negativeCharacter){
 		$this->negativeCharacter = $negativeCharacter;
 	}
 
