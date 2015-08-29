@@ -207,8 +207,6 @@ class BaseNConverter{
 					,'Y'
 					,'Z'
 					,'.'
-					,'!'
-					,'*'
 					,'-'
 					,'_'
 				);
