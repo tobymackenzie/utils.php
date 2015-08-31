@@ -1,33 +1,34 @@
 <?php
 namespace TJM\Component\Utils;
 
+use Exception;
+
 /*
 Class: BaseNConverter
 Use to convert to and from a base-n number with provided character table.  Only works for integers currently.
+Arguments:
+	config: can be either an array of characters that make up the character table, or a string representing the configuration (see `$config`)
 */
 class BaseNConverter{
-	public function __construct($characterTable = null, $options = Array()){
-		$this->setCharacterTable($characterTable);
-		if(isset($options['negativeCharacter'])){
-			$this->setNegativeCharacter($options['negativeCharacter']);
-		}
+	public function __construct($config){
+		$this->setConfig($config);
 	}
 
 	/*
 	Property: base
 	'n' of base-n, calculated based on the number of characters in characterTable.
 	*/
-	protected $base = 2;
+	protected $base;
 
 	/*
 	Property: characterTable
 	Table of characters to be used in base-n number, with first value representing 0, second value representing 1, and so on.
 	*/
-	protected $characterTable = Array(0, 1);
+	protected $characterTable;
 
-	public function setCharacterTable($characterTable){
+	protected function setCharacterTable($characterTable){
 		if(is_string($characterTable)){
-			$this->characterTable = static::getNamedTable($characterTable);
+			$this->characterTable = str_split($characterTable);
 		}else{
 			$this->characterTable = $characterTable;
 		}
@@ -35,14 +36,73 @@ class BaseNConverter{
 	}
 
 	/*
+	Property: config
+	String representing configuration.  This string represents the entire configuration for the instance of this class, and any instances with the same config string will produce the same output given the same input.  The config consists of one or more pieces separated by '::'.  The pieces are as follows:
+
+	1. (required) The character table.  If wrapped in '(' and ')' characters, will be considered an ordered list of characters making up the table.  Otherwise will be considered a named character table from `getNamedCharacterTableConfig()`.
+	2. negativeCharacter
+	*/
+	protected $config;
+	public function getConfig(){
+		return $this->config;
+	}
+	protected function setConfig($config){
+		if(is_array($config)){
+			$this->setCharacterTable($config);
+			$this->config = implode('', $config);
+		}else{
+			$this->config = $config;
+			if(preg_match(static::NAMED_CONFIG_REGEX, $config, $matches)){
+				preg_match(static::CUSTOM_TABLE_CONFIG_REGEX, $this->getNamedCharacterTableConfig($matches[1]), $namedConfigMatches);
+				$this->setCharacterTable($namedConfigMatches[1]);
+				if(isset($matches[3])){
+					$this->negativeCharacter = $matches[3];
+				}elseif(isset($namedConfigMatches[3])){
+					$this->negativeCharacter = $namedConfigMatches[3];
+				}
+			}elseif(preg_match(static::CUSTOM_TABLE_CONFIG_REGEX, $config, $matches)){
+				$this->setCharacterTable($matches[1]);
+				if(isset($matches[3])){
+					$this->negativeCharacter = $matches[3];
+				}
+			}else{
+				throw new Exception("Config '{$config}' not in valid format.");
+			}
+		}
+	}
+	public function getNamedCharacterTableConfig($name){
+		switch($name){
+			case 'base16':
+			case 'base16LC':
+				return '(0123456789abcdef)::-';
+			break;
+			case 'base16UC':
+				return '(0123456789ABCDEF)::-';
+			break;
+			case 'urlSafe':
+				return '(0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_)::~';
+			break;
+		}
+	}
+
+	/*
+	Property: CUSTOM_TABLE_CONFIG_REGEX
+	Regex used to match custom character table configuration format.
+	*/
+	const CUSTOM_TABLE_CONFIG_REGEX = '/^\((.*?)\)(::(.))?$/';
+	// const CUSTOM_TABLE_CONFIG_REGEX = '/^\(((?:([.])(?!.*\\1))*)\)(::(.))?$/';
+
+	/*
+	Property: NAMED_CONFIG_REGEX
+	Regex used to match named configuration format.
+	*/
+	const NAMED_CONFIG_REGEX = '/^(\w+)(::(.))?$/';
+
+	/*
 	Property: negativeCharacter
 	Character to prepend to number to represent a negative value.
 	*/
 	protected $negativeCharacter = '-';
-
-	protected function setNegativeCharacter($negativeCharacter){
-		$this->negativeCharacter = $negativeCharacter;
-	}
 
 	/*=====
 	==conversions
@@ -72,6 +132,7 @@ class BaseNConverter{
 		}
 		return $result;
 	}
+
 	/*
 	Method: to
 	Convert regular integer to base-n representation.
@@ -94,123 +155,5 @@ class BaseNConverter{
 			}
 		}
 		return $result;
-	}
-
-	/*=====
-	==tables
-	=====*/
-	static public function getNamedTable($name){
-		switch($name){
-			case 'base16':
-			case 'base16LC':
-				return Array(
-					'0'
-					,'1'
-					,'2'
-					,'3'
-					,'4'
-					,'5'
-					,'6'
-					,'7'
-					,'8'
-					,'9'
-					,'a'
-					,'b'
-					,'c'
-					,'d'
-					,'e'
-					,'f'
-				);
-			break;
-			case 'base16UC':
-				return Array(
-					'0'
-					,'1'
-					,'2'
-					,'3'
-					,'4'
-					,'5'
-					,'6'
-					,'7'
-					,'8'
-					,'9'
-					,'A'
-					,'B'
-					,'C'
-					,'D'
-					,'E'
-					,'F'
-				);
-			break;
-			case 'urlSafe':
-				return Array(
-					'0'
-					,'1'
-					,'2'
-					,'3'
-					,'4'
-					,'5'
-					,'6'
-					,'7'
-					,'8'
-					,'9'
-					,'a'
-					,'b'
-					,'c'
-					,'d'
-					,'e'
-					,'f'
-					,'g'
-					,'h'
-					,'i'
-					,'j'
-					,'k'
-					,'l'
-					,'m'
-					,'n'
-					,'o'
-					,'p'
-					,'q'
-					,'r'
-					,'s'
-					,'t'
-					,'u'
-					,'v'
-					,'w'
-					,'x'
-					,'y'
-					,'z'
-					,'A'
-					,'B'
-					,'C'
-					,'D'
-					,'E'
-					,'F'
-					,'G'
-					,'H'
-					,'I'
-					,'J'
-					,'K'
-					,'L'
-					,'M'
-					,'N'
-					,'O'
-					,'P'
-					,'Q'
-					,'R'
-					,'S'
-					,'T'
-					,'U'
-					,'V'
-					,'W'
-					,'X'
-					,'Y'
-					,'Z'
-					,'.'
-					,'-'
-					,'_'
-				);
-			break;
-		}
 	}
 }
