@@ -79,6 +79,15 @@ class BaseNConverter{
 			case 'base16UC':
 				return '(0123456789ABCDEF)::-';
 			break;
+			/*
+			newBase60: probably ideal when readability and URL safeness are important, like for URL shorteners.  [Tantek's creation](http://tantek.pbworks.com/w/page/19402946/NewBase60)(-@), used for his URL shortener.
+			*/
+			case 'newBase60':
+				return '(0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz)::-';
+			break;
+			/*
+			urlSafe: Provides 5 more characters than 'newBase60' ('l','I','O','.', and '-'), but should still be safe for both HTTP and filesystem paths.  Probably best for URLs when readability isn't important, like for asset versioning.
+			*/
 			case 'urlSafe':
 				return '(0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_)::~';
 			break;
