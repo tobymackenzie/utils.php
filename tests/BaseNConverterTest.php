@@ -96,6 +96,36 @@ class BaseNConverterTest extends PHPUnit_Framework_TestCase{
 			$this->assertEquals($newBase60, $converter->to($base10));
 		}
 	}
+	public function testFromForNewBase64(){
+		$converter = new BaseNConverter('newBase64');
+		$map = Array(
+			'0'=> '0'
+			,'1'=> '1'
+			,'~1'=> '-1'
+			,'A'=> '10'
+			,'1a'=> '99'
+			,'13'=> '67'
+			,'10'=> '64'
+		);
+		foreach($map as $newBase64=> $base10){
+			$this->assertEquals($base10, $converter->from($newBase64));
+		}
+	}
+	public function testToForNewBase64(){
+		$converter = new BaseNConverter('newBase64');
+		$map = Array(
+			'0'=> '0'
+			,'1'=> '1'
+			,'-1'=> '~1'
+			,'10'=> 'A'
+			,'95'=> '1X'
+			,'63'=> '$'
+			,'60'=> '-'
+		);
+		foreach($map as $base10=> $newBase64){
+			$this->assertEquals($newBase64, $converter->to($base10));
+		}
+	}
 	public function testFromForTJMBase65Map(){
 		$converter = new BaseNConverter('tjmBase65::~');
 		$map = Array(

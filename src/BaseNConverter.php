@@ -86,6 +86,12 @@ class BaseNConverter{
 				return '(0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz)::-';
 			break;
 			/*
+			newBase64: probably ideal when readability and URL safeness are important, like for URL shorteners.  Not great for filesystem paths because of '*'.  [Tantek's creation](http://tantek.pbworks.com/w/page/24308279/NewBase64)(-@).
+			*/
+			case 'newBase64':
+				return '(0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz-+*$)::~';
+			break;
+			/*
 			tjmBase65: Provides 5 more characters than 'newBase60' ('l','I','O','.', and '-'), but should still be safe for both HTTP and filesystem paths.  Probably best for URLs when readability isn't important, like for asset versioning.
 			*/
 			case 'tjmBase65':
