@@ -96,8 +96,8 @@ class BaseNConverterTest extends PHPUnit_Framework_TestCase{
 			$this->assertEquals($newBase60, $converter->to($base10));
 		}
 	}
-	public function testFromForUrlSafeMap(){
-		$converter = new BaseNConverter('urlSafe::~');
+	public function testFromForTJMBase65Map(){
+		$converter = new BaseNConverter('tjmBase65::~');
 		$map = Array(
 			'0'=> '0'
 			,'1'=> '1'
@@ -107,12 +107,12 @@ class BaseNConverterTest extends PHPUnit_Framework_TestCase{
 			,'-'=> '63'
 			,'10'=> '65'
 		);
-		foreach($map as $baseUrlSafe=> $base10){
-			$this->assertEquals($base10, $converter->from($baseUrlSafe));
+		foreach($map as $tJMBase65=> $base10){
+			$this->assertEquals($base10, $converter->from($tJMBase65));
 		}
 	}
-	public function testToForUrlSafeMap(){
-		$converter = new BaseNConverter('urlSafe');
+	public function testToForTJMBase65Map(){
+		$converter = new BaseNConverter('tjmBase65');
 		$map = Array(
 			'0'=> '0'
 			,'1'=> '1'
@@ -122,8 +122,8 @@ class BaseNConverterTest extends PHPUnit_Framework_TestCase{
 			,'63'=> '-'
 			,'65'=> '10'
 		);
-		foreach($map as $base10=> $baseUrlSafe){
-			$this->assertEquals($baseUrlSafe, $converter->to($base10));
+		foreach($map as $base10=> $tJMBase65){
+			$this->assertEquals($tJMBase65, $converter->to($base10));
 		}
 	}
 	public function testFromForBase16Map(){

@@ -86,9 +86,9 @@ class BaseNConverter{
 				return '(0123456789ABCDEFGHJKLMNPQRSTUVWXYZ_abcdefghijkmnopqrstuvwxyz)::-';
 			break;
 			/*
-			urlSafe: Provides 5 more characters than 'newBase60' ('l','I','O','.', and '-'), but should still be safe for both HTTP and filesystem paths.  Probably best for URLs when readability isn't important, like for asset versioning.
+			tjmBase65: Provides 5 more characters than 'newBase60' ('l','I','O','.', and '-'), but should still be safe for both HTTP and filesystem paths.  Probably best for URLs when readability isn't important, like for asset versioning.
 			*/
-			case 'urlSafe':
+			case 'tjmBase65':
 				return '(0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.-_)::~';
 			break;
 		}
