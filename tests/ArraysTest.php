@@ -1,9 +1,9 @@
 <?php
 namespace TJM\Component\Utils\Tests;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TJM\Component\Utils\Arrays;
 
-class ArraysTest extends PHPUnit_Framework_TestCase{
+class ArraysTest extends TestCase{
 	public function testDeepMergeWithSimpleNumericArrays(){
 		$result = Arrays::deepMerge(Array(11, 12), Array(21), Array(31, 32, 33));
 		$this->assertEquals(6, count($result), 'Result should have six items');

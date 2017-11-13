@@ -1,10 +1,10 @@
 <?php
 namespace TJM\Component\Utils\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use TJM\Component\Utils\BaseNConverter;
 
-class BaseNConverterTest extends PHPUnit_Framework_TestCase{
+class BaseNConverterTest extends TestCase{
 	public function testCustomTableConfigRegex(){
 		//--matching
 		$matchingTests = Array(
