@@ -137,7 +137,7 @@ class BaseNConverter{
 		$length = strlen($number);
 		$result = 0;
 		for($i = 0; $i < $length; ++$i){
-			$char = $number{$i};
+			$char = substr($number, $i, 1);
 			$tablePosition = array_search($char, $this->characterTable);
 			$charPosition = $length - $i - 1;
 			$result += $tablePosition * pow($this->base, $charPosition);
