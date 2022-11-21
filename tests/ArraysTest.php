@@ -123,4 +123,26 @@ class ArraysTest extends TestCase{
 		$this->assertEquals(1, $result['foo'][0], 'Result[foo] first item should be \'1\'');
 		$this->assertEquals(5, $result['foo'][4], 'Result[foo] last item should be \'5\'');
 	}
+	public function testDeepMergeWithUniqueFlag(){
+		$result = Arrays::deepMerge(
+			Arrays::MERGE_NUMERIC_UNIQUE_VALUES,
+			array(
+				1,
+				array(1, 2),
+				'three',
+			),
+			array(
+				2,
+				'three',
+				array(1, 2),
+				array(1, 2, 3),
+			),
+		);
+		$this->assertEquals(5, count($result));
+		$this->assertEquals(1, $result[0]);
+		$this->assertEquals(array(1, 2), $result[1]);
+		$this->assertEquals('three', $result[2]);
+		$this->assertEquals(2, $result[3]);
+		$this->assertEquals(array(1, 2, 3), $result[4]);
+	}
 }

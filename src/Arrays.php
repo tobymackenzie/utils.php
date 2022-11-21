@@ -9,6 +9,12 @@ class Arrays{
 	const MERGE_OVERWRITE = 1;
 
 	/*
+	Constant: MERGE_NUMERIC_UNIQUE_VALUES
+	Tell merge to only merge in new value if unique
+	*/
+	const MERGE_NUMERIC_UNIQUE_VALUES = 2;
+
+	/*
 	Method: deepMerge
 	Recursively merge potentially nested arrays.
 	Arguments:
@@ -29,13 +35,15 @@ class Arrays{
 
 				//--if key is integer, implying numeric array, push into result array
 				if(is_integer($key)){
-					$result[] = $value;
+					if(!($flags & self::MERGE_NUMERIC_UNIQUE_VALUES) || !in_array($value, $result)){
+						$result[] = $value;
+					}
 				//--if array, recursively merge into key
 				}elseif(isset($result[$key]) && is_array($result[$key]) && is_array($value)){
 					$result[$key] = static::deepMerge($flags, $result[$key], $value);
 				//--otherwise, set value for key, possibly overriding existing
 				}else{
-					if(!array_key_exists($key, $result) || $flags & static::MERGE_OVERWRITE){
+					if(!array_key_exists($key, $result) || $flags & self::MERGE_OVERWRITE){
 						$result[$key] = $value;
 					}
 				}
